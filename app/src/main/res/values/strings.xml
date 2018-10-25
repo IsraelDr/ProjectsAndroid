@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="hello_world2">Hello World2!</string>
+    <string name="hello_world1">Hello World1</string>
 </resources>
