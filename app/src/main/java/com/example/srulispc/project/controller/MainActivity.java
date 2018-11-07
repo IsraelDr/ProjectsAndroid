@@ -1,7 +1,9 @@
-package com.example.srulispc.project;
+package com.example.srulispc.project.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.srulispc.project.R;
 
 public class MainActivity extends AppCompatActivity {
 
