@@ -20,6 +20,12 @@ public class Ride {
     private String clientPhoneNumber;
     private String clientMail;
 
+    public Ride(String name,String phoneNumber,String mail) {
+        this.clientName= name;
+        this.clientPhoneNumber = phoneNumber;
+        this.clientMail = mail;
+    }
+
     public Status getStatus() {
         return status;
     }

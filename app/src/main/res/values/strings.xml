@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">GetTaxi</string>
     <string name="addRide">הזמן נסיעה</string>
-    <string name="orderRide">הזמן</string>
+    <string name="orderRide">הזמנת נסיעה</string>
+    <string name="name">שם נוסע</string>
+    <string name="phonenumber">טלפון נייד</string>
+    <string name="email">כתובת מייל</string>
+    <string name="cancelOrder">בטל הזמנה</string>
 </resources>
