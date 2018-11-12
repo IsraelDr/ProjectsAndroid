@@ -55,8 +55,9 @@
         android:id="@+id/dialogMakeorder"
         android:layout_width="124dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/mail"
-        android:layout_toRightOf="@id/dialogCancelOrder"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/dialogCancelOrder"
+        android:layout_marginStart="19dp"
         android:background="@android:color/transparent"
         android:text="@string/addRide"
         android:textColor="@color/colorAccent" />

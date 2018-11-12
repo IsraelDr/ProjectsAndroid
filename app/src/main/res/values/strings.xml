@@ -6,4 +6,9 @@
     <string name="phonenumber">טלפון נייד</string>
     <string name="email">כתובת מייל</string>
     <string name="cancelOrder">בטל הזמנה</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="locationrequired">מיקום נצרך</string>
+    <string name="locationdescription">שירות מיקום אינו פעיל. על מנת להמשיך הדלק את מיקום המכשיר.</string>
+    <string name="settings">הגדרות</string>
+    <string name="cancel">ביטול</string>
 </resources>
