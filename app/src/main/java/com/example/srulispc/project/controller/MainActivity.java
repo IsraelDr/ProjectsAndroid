@@ -27,6 +27,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
@@ -68,6 +70,12 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.mail)).getText().toString()
                         );
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("message");
+
+                        myRef.setValue("Hello, World!");
+
                         newRide.setStatus(Ride.Status.AVAILABLE);
 
                         Toast.makeText(getApplicationContext(),
