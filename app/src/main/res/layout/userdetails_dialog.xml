@@ -50,12 +50,16 @@
         android:layout_below="@id/phonenumber"
         android:hint="@string/email"
         android:inputType="textEmailAddress"/>
+
     <AutoCompleteTextView
-        android:layout_below="@+id/mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/autocomplete"
-        android:hint="Type in your Location" />
+        android:layout_width="353dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/mail"
+        android:hint="@string/locationAddress" />
 
     <Button
         android:id="@+id/dialogMakeorder"
@@ -66,7 +70,9 @@
         android:layout_marginStart="19dp"
         android:background="@android:color/transparent"
         android:text="@string/addRide"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="19dp" />
 
     <Button
         android:id="@+id/dialogCancelOrder"

@@ -6,7 +6,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,7 +22,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.srulispc.project.R;
 import com.example.srulispc.project.model.backend.BackendFactory;
 import com.example.srulispc.project.model.backend.Ibackend;
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
-    private ProgressDialog pd;
 
 
     @Override
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        backend= BackendFactory.getInstance();
+        backend = BackendFactory.getInstance();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -80,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 makeOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-
                         Ride newRide = new Ride(
                                 ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
@@ -90,13 +85,6 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         );
                         newRide.setStatus(Ride.Status.AVAILABLE);
                         backend.addRide(newRide);
-                        /*Toast.makeText(getApplicationContext(),
-                                newRide.getClientName() +
-                                        newRide.getClientPhoneNumber() +
-                                        newRide.getClientMail(),
-                                Toast.LENGTH_LONG).show();*/
-                        pd=ProgressDialog.show(MainActivity.this,"בקשתך נשלחה", "נא להמתין לנהג");
-                        dialog.dismiss();
                     }
                 });
 
