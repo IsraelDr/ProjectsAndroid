@@ -1,6 +1,8 @@
 package com.example.srulispc.project.model.entities;
 
 
+import android.location.Location;
+
 import java.util.Date;
 
 public class Ride {
@@ -12,18 +14,19 @@ public class Ride {
     }
 
     private Status status;
-    private String targetLocation;
-    private String sourceLocation;
+    private Location targetLocation;
+    private Location sourceLocation;
     private Date rideStartTime;
     private Date rideFinishTime;
     private String clientName;
     private String clientPhoneNumber;
     private String clientMail;
 
-    public Ride(String name,String phoneNumber,String mail) {
+    public Ride(String name, String phoneNumber, String mail, Location sourcelocation) {
         this.clientName= name;
         this.clientPhoneNumber = phoneNumber;
         this.clientMail = mail;
+        this.sourceLocation=sourcelocation;
     }
 
     public Status getStatus() {
@@ -34,19 +37,19 @@ public class Ride {
         this.status = status;
     }
 
-    public String getTargetLocation() {
+    public Location getTargetLocation() {
         return targetLocation;
     }
 
-    public void setTargetLocation(String targetLocation) {
+    public void setTargetLocation(Location targetLocation) {
         this.targetLocation = targetLocation;
     }
 
-    public String getSourceLocation() {
+    public Location getSourceLocation() {
         return sourceLocation;
     }
 
-    public void setSourceLocation(String sourceLocation) {
+    public void setSourceLocation(Location sourceLocation) {
         this.sourceLocation = sourceLocation;
     }
 

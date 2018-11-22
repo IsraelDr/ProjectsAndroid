@@ -17,18 +17,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.srulispc.project.R;
+import com.example.srulispc.project.model.backend.BackendFactory;
+import com.example.srulispc.project.model.backend.Ibackend;
 import com.example.srulispc.project.model.entities.Ride;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private double latitude;
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
+    private Ibackend backend;
 
 
     @Override
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        backend= BackendFactory.getInstance();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -60,7 +63,17 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setContentView(R.layout.userdetails_dialog);
                 dialog.show();
-
+                AutoCompleteTextView autocompleteView = dialog.findViewById(R.id.autocomplete);
+                autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(MainActivity.this, R.layout.autocomplete_list));
+                autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        // Get data associated with the specified position
+                        // in the list (AdapterView)
+                        String description = (String) parent.getItemAtPosition(position);
+                        Toast.makeText(MainActivity.this, description, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Button makeOrder = dialog.findViewById(R.id.dialogMakeorder);
                 makeOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -68,21 +81,16 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         Ride newRide = new Ride(
                                 ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
-                                ((EditText) dialog.findViewById(R.id.mail)).getText().toString()
+                                ((EditText) dialog.findViewById(R.id.mail)).getText().toString(),
+                                mMap.getMyLocation()
                         );
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef = database.getReference("message");
-
-                        myRef.setValue("Hello, World!");
-
                         newRide.setStatus(Ride.Status.AVAILABLE);
-
-                        Toast.makeText(getApplicationContext(),
+                        backend.addRide(newRide);
+                        /*Toast.makeText(getApplicationContext(),
                                 newRide.getClientName() +
                                         newRide.getClientPhoneNumber() +
                                         newRide.getClientMail(),
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG).show();*/
                     }
                 });
 

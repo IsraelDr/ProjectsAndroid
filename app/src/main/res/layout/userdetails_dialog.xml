@@ -50,6 +50,11 @@
         android:layout_below="@id/phonenumber"
         android:hint="@string/email"
         android:inputType="textEmailAddress"/>
+    <AutoCompleteTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/autocomplete"
+        android:hint="Type in your Location" />
 
     <Button
         android:id="@+id/dialogMakeorder"
