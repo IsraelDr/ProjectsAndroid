@@ -13,4 +13,5 @@
     <string name="cancel">ביטול</string>
     <string name="requestsent">בקשתך נשלחה</string>
     <string name="waitfordriver">נא להמתין לנהג</string>
+    <string name="locationAddress">כתובת יעד</string>
 </resources>

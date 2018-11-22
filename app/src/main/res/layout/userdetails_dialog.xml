@@ -1,90 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-    <ImageView
-        android:id="@+id/orderimage"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
-        android:layout_height="102dp"
-        android:scaleType="centerCrop"
-        android:visibility="visible"
-        app:srcCompat="@drawable/orderride"
-        android:contentDescription="@string/orderRide"/>
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="353dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/orderimage"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/name"
-        android:inputType="text" />
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical">
 
-    <EditText
-        android:id="@+id/phonenumber"
-        android:layout_width="353dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/name"
-        android:hint="@string/phonenumber"
-        android:inputType="number" />
+        <ImageView
+            android:id="@+id/orderimage"
+            android:layout_width="wrap_content"
+            android:layout_height="102dp"
+            android:contentDescription="@string/orderRide"
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            app:srcCompat="@drawable/orderride" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/orderimage"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/phonenumber"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/phonenumber"
+            android:inputType="number" />
 
 
-    <EditText
-        android:id="@+id/mail"
-        android:layout_width="353dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/phonenumber"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"/>
+        <EditText
+            android:id="@+id/mail"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/phonenumber"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
 
-    <AutoCompleteTextView
-        android:id="@+id/autocomplete"
-        android:layout_width="353dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@+id/mail"
-        android:hint="@string/locationAddress" />
+        <AutoCompleteTextView
+            android:id="@+id/autocomplete"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mail"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/locationAddress" />
 
-    <Button
-        android:id="@+id/dialogMakeorder"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/dialogCancelOrder"
-        android:layout_marginStart="19dp"
-        android:background="@android:color/transparent"
-        android:text="@string/addRide"
-        android:textColor="@color/colorAccent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="19dp" />
+        <Button
+            android:id="@+id/dialogMakeorder"
+            android:layout_width="124dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/autocomplete"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@android:color/transparent"
+            android:text="@string/addRide"
+            android:textColor="@color/colorAccent" />
 
-    <Button
-        android:id="@+id/dialogCancelOrder"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:layout_below="@id/autocomplete"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        android:text="@string/cancelOrder"
-        android:textColor="@color/colorAccent" />
-
-</RelativeLayout>
+        <Button
+            android:id="@+id/dialogCancelOrder"
+            android:layout_width="124dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dialogMakeorder"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="19dp"
+            android:layout_marginLeft="19dp"
+            android:background="@android:color/transparent"
+            android:text="@string/cancelOrder"
+            android:textColor="@color/colorAccent" />
+    </RelativeLayout>
+</ScrollView>

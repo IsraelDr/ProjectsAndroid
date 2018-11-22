@@ -14,14 +14,12 @@ public class FireBase implements Ibackend {
     {
         database = FirebaseDatabase.getInstance();
         myRef=database.getReference("counter");
-        counter=Integer.parseInt(myRef.getKey());
+//        counter = Integer.parseInt(myRef.getKey());   *getKey returns reference name and not value
     }
     public void addRide(Ride newRide) {
 
         myRef = database.getReference("Ride-"+counter);
         myRef.setValue(newRide);
         counter++;
-
-
     }
 }

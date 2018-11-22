@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         Toast.makeText(MainActivity.this, description, Toast.LENGTH_SHORT).show();
                     }
                 });
+
                 Button makeOrder = dialog.findViewById(R.id.dialogMakeorder);
                 makeOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
