@@ -8,10 +8,17 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FireBase implements Ibackend {
 
     static int counter=1;
-    @Override
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    public FireBase()
+    {
+        database = FirebaseDatabase.getInstance();
+        myRef=database.getReference("counter");
+        counter=Integer.parseInt(myRef.getKey());
+    }
     public void addRide(Ride newRide) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Ride-"+counter);
+
+        myRef = database.getReference("Ride-"+counter);
         myRef.setValue(newRide);
         counter++;
 

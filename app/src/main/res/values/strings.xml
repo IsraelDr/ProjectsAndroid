@@ -11,4 +11,6 @@
     <string name="locationdescription">שירות מיקום אינו פעיל. על מנת להמשיך הדלק את מיקום המכשיר.</string>
     <string name="settings">הגדרות</string>
     <string name="cancel">ביטול</string>
+    <string name="requestsent">בקשתך נשלחה</string>
+    <string name="waitfordriver">נא להמתין לנהג</string>
 </resources>

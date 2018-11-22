@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
+    private ProgressDialog pd;
 
 
     @Override
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 makeOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+
                         Ride newRide = new Ride(
                                 ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
@@ -91,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                                         newRide.getClientPhoneNumber() +
                                         newRide.getClientMail(),
                                 Toast.LENGTH_LONG).show();*/
+                        pd=ProgressDialog.show(MainActivity.this,"בקשתך נשלחה", "נא להמתין לנהג");
+                        dialog.dismiss();
                     }
                 });
 
