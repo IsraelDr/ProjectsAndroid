@@ -16,9 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +26,10 @@ import com.example.srulispc.project.model.backend.BackendFactory;
 import com.example.srulispc.project.model.backend.Ibackend;
 import com.example.srulispc.project.model.entities.Ride;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -36,12 +39,11 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private double longitude;
-    private double latitude;
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
 
+    private Location targetLocation = new Location("targetLocation");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +64,24 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setContentView(R.layout.userdetails_dialog);
                 dialog.show();
-                AutoCompleteTextView autocompleteView = dialog.findViewById(R.id.autocomplete);
-                autocompleteView.setAdapter(new PlacesAutoCompleteAdapter(MainActivity.this, R.layout.autocomplete_list));
-                autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                //---------------Auto complete setting-----------------------
+                PlaceAutocompleteFragment placeAutocompleteFragment;
+                placeAutocompleteFragment = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById( R.id.autocomplete );
+                placeAutocompleteFragment.setHint("כתובת  יעד");
+
+                placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Get data associated with the specified position
-                        // in the list (AdapterView)
-                        String description = (String) parent.getItemAtPosition(position);
-                        Toast.makeText(MainActivity.this, description, Toast.LENGTH_SHORT).show();
+                    public void onPlaceSelected(Place place) {
+                        targetLocation.setLatitude(place.getLatLng().latitude);
+                        targetLocation.setLongitude(place.getLatLng().longitude);
+                    }
+
+                    @Override
+                    public void onError(Status status) {
                     }
                 });
-
+                //---------------Make Order Button---------------------------
                 Button makeOrder = dialog.findViewById(R.id.dialogMakeorder);
                 makeOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,13 +90,14 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                                 ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.mail)).getText().toString(),
-                                mMap.getMyLocation()
+                                mMap.getMyLocation(),
+                                targetLocation
                         );
                         newRide.setStatus(Ride.Status.AVAILABLE);
                         backend.addRide(newRide);
                     }
                 });
-
+                //---------------Cancel Order Button-------------------------
                 Button cancelOrder = dialog.findViewById(R.id.dialogCancelOrder);
                 cancelOrder.setOnClickListener(new View.OnClickListener() {
                     @Override

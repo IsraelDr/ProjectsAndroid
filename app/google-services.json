@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "896899049458",
+    "firebase_url": "https://projectsandroid-18a91.firebaseio.com",
+    "project_id": "projectsandroid-18a91",
+    "storage_bucket": "projectsandroid-18a91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896899049458:android:73084e5585e690b8",
+        "android_client_info": {
+          "package_name": "com.example.srulispc.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896899049458-4i35a2fmr97ou947ib0o11pnsmkppjoe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.srulispc.project",
+            "certificate_hash": "c340230a4f6bf294c537cf017f97d4801e0521cc"
+          }
+        },
+        {
+          "client_id": "896899049458-0if6dkuemr4goouu351v2jjdo720uuad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.srulispc.project",
+            "certificate_hash": "2b398994f83f47e4df197e180a5f3e84a5fb5d4d"
+          }
+        },
+        {
+          "client_id": "896899049458-jetgg2dqo7ke2sudg71jb9lt9dpe7c3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbhntvfbIvdghaGGsrw9Tc_CCrhHctDVA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896899049458-jetgg2dqo7ke2sudg71jb9lt9dpe7c3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

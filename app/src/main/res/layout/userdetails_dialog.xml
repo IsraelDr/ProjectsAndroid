@@ -57,16 +57,14 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress" />
 
-        <AutoCompleteTextView
+        <fragment
             android:id="@+id/autocomplete"
-            android:layout_width="353dp"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mail"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/locationAddress" />
+            android:layout_below="@id/mail" />
+
 
         <Button
             android:id="@+id/dialogMakeorder"

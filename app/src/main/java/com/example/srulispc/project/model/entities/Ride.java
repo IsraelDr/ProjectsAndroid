@@ -22,11 +22,12 @@ public class Ride {
     private String clientPhoneNumber;
     private String clientMail;
 
-    public Ride(String name, String phoneNumber, String mail, Location sourcelocation) {
+    public Ride(String name, String phoneNumber, String mail, Location sourcelocation, Location targetLocation) {
         this.clientName= name;
         this.clientPhoneNumber = phoneNumber;
         this.clientMail = mail;
         this.sourceLocation=sourcelocation;
+        this.targetLocation=targetLocation;
     }
 
     public Status getStatus() {
