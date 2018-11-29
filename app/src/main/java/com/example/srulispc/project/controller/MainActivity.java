@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 //---------------Auto complete setting-----------------------
                 PlaceAutocompleteFragment placeAutocompleteFragment;
                 placeAutocompleteFragment = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById( R.id.autocomplete );
-                placeAutocompleteFragment.setHint("כתובת  יעד");
+                placeAutocompleteFragment.setHint(getString(R.string.targetaddress));
 
                 placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                         );
                         newRide.setStatus(Ride.Status.AVAILABLE);
                         backend.addRide(newRide);
+
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(),R.string.order_successful , Toast.LENGTH_SHORT).show();
                     }
                 });
                 //---------------Cancel Order Button-------------------------
@@ -119,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                     public void onClick(View view) {
                         dialog.dismiss();
                     }
+
                 });
             }
         });

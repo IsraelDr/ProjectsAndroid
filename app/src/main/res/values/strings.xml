@@ -13,5 +13,6 @@
     <string name="cancel">ביטול</string>
     <string name="requestsent">בקשתך נשלחה</string>
     <string name="waitfordriver">נא להמתין לנהג</string>
-    <string name="locationAddress">כתובת יעד</string>
+    <string name="order_successful">הזמנה בוצעה בהצלחה!</string>
+    <string name="targetaddress">כתובת יעד</string>
 </resources>
