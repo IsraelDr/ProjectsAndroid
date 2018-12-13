@@ -1,4 +1,4 @@
-package com.example.srulispc.project.controller;
+/*package com.example.srulispc.project.controller;
 
 import android.util.Log;
 
@@ -80,4 +80,4 @@ public class PlaceAPI {
 
         return resultList;
     }
-}
+}*/

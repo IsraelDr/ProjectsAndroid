@@ -23,9 +23,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.srulispc.project.R;
 import com.example.srulispc.project.model.backend.BackendFactory;
 import com.example.srulispc.project.model.backend.Ibackend;
+import com.example.srulispc.project.model.entities.CustomLocation;
 import com.example.srulispc.project.model.entities.Ride;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
 
-    private Location targetLocation = new Location("targetLocation");
+    private CustomLocation targetLocation = new CustomLocation("targetLocation");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                                 ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
                                 ((EditText) dialog.findViewById(R.id.mail)).getText().toString(),
-                                mMap.getMyLocation(),
+                                new CustomLocation((mMap.getMyLocation())),
                                 targetLocation
                         );
                         newRide.setStatus(Ride.Status.AVAILABLE);

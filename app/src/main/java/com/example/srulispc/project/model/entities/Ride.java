@@ -14,15 +14,17 @@ public class Ride {
     }
 
     private Status status;
-    private Location targetLocation;
-    private Location sourceLocation;
+    private CustomLocation targetLocation;
+    private CustomLocation sourceLocation;
     private Date rideStartTime;
     private Date rideFinishTime;
     private String clientName;
     private String clientPhoneNumber;
     private String clientMail;
 
-    public Ride(String name, String phoneNumber, String mail, Location sourcelocation, Location targetLocation) {
+    public Ride(){}
+
+    public Ride(String name, String phoneNumber, String mail, CustomLocation sourcelocation, CustomLocation targetLocation) {
         this.clientName= name;
         this.clientPhoneNumber = phoneNumber;
         this.clientMail = mail;
@@ -42,7 +44,7 @@ public class Ride {
         return targetLocation;
     }
 
-    public void setTargetLocation(Location targetLocation) {
+    public void setTargetLocation(CustomLocation targetLocation) {
         this.targetLocation = targetLocation;
     }
 
@@ -50,7 +52,7 @@ public class Ride {
         return sourceLocation;
     }
 
-    public void setSourceLocation(Location sourceLocation) {
+    public void setSourceLocation(CustomLocation sourceLocation) {
         this.sourceLocation = sourceLocation;
     }
 
