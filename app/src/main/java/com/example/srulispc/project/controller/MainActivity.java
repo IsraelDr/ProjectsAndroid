@@ -37,6 +37,11 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
@@ -46,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
+    ArrayList markerPoints= new ArrayList();
 
     private CustomLocation targetLocation = new CustomLocation("targetLocation");
 
@@ -81,6 +87,29 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                     public void onPlaceSelected(Place place) {
                         targetLocation.setLatitude(place.getLatLng().latitude);
                         targetLocation.setLongitude(place.getLatLng().longitude);
+
+                        if (markerPoints.size() > 1) {
+                            markerPoints.clear();
+                            mMap.clear();
+                        }
+
+                        // Adding new item to the ArrayList
+                        markerPoints.add(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
+
+                        // Creating MarkerOptions
+                        MarkerOptions options = new MarkerOptions();
+
+                        // Setting the position of the marker
+                        options.position(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
+
+                        if (markerPoints.size() == 1) {
+                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        } else if (markerPoints.size() == 2) {
+                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        }
+
+                        // Add new marker to the Google Map Android API V2
+                        mMap.addMarker(options);
                     }
 
                     @Override
@@ -152,6 +181,12 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
+            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location location) {
+                    int k=5;
+                }
+            });
 
         }
 
