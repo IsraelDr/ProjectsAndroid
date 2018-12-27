@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.srulispc.project.model.backend.Ibackend;
+import com.example.srulispc.project.model.entities.CustomLocation;
 import com.example.srulispc.project.model.entities.Ride;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -71,12 +72,23 @@ public class FireBase implements Ibackend {
     }
 
 
-    public void addRide(Ride newRide) {
+    public String addRide(Ride newRide) {
 
         //counter++;
         //database.getReference("counter").setValue(counter);
 
         myRef = database.getReference("Rides");
-        myRef.child(""+newRide.getClientPhoneNumber()).setValue(newRide);
+        String id = myRef.push().getKey();
+// create a child with index value
+        myRef.child(id).setValue(newRide);
+        return id;
+    }
+    public void updatelocation(String id, CustomLocation c) {
+
+        //counter++;
+        //database.getReference("counter").setValue(counter);
+
+        myRef = database.getReference("Rides");
+        myRef.child(id).child("sourceLocation").setValue(c);
     }
 }

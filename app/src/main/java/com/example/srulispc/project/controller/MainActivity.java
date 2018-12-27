@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
+    private String id;
     ArrayList markerPoints= new ArrayList();
 
     private CustomLocation targetLocation = new CustomLocation("targetLocation");
@@ -139,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                                 new CustomLocation((mMap.getMyLocation())),
                                 targetLocation
                         );
-                        newRide.setStatus(Ride.Status.AVAILABLE);
-                        backend.addRide(newRide);
 
+                        newRide.setStatus(Ride.Status.AVAILABLE);
+                        id=backend.addRide(newRide);
                         dialog.dismiss();
                         Toast.makeText(getApplicationContext(),R.string.order_successful , Toast.LENGTH_SHORT).show();
                     }
@@ -185,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 @Override
                 public void onMyLocationChange(Location location) {
                     int k=5;
+                    if(id!=null)
+                        backend.updatelocation(id,new CustomLocation(location));
                 }
             });
 
@@ -265,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     @Override
     public void onMyLocationChange(Location location) {
-        int k=5;
+        backend.updatelocation(id,(CustomLocation)location);
     }
 }
 
