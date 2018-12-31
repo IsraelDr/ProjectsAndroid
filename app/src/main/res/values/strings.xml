@@ -15,4 +15,6 @@
     <string name="waitfordriver">נא להמתין לנהג</string>
     <string name="order_successful">הזמנה בוצעה בהצלחה!</string>
     <string name="targetaddress">כתובת יעד</string>
+    <string name="pickupaddress">כתובת איסוף</string>
+    <string name="findLocationError">לא נמצא מיקום! וודא שה-GPS דלוק ונסה שוב.</string>
 </resources>

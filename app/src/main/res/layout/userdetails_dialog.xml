@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_dialog">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -13,8 +16,9 @@
 
         <ImageView
             android:id="@+id/orderimage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="102dp"
+            android:layout_marginTop="2dp"
             android:contentDescription="@string/orderRide"
             android:scaleType="centerCrop"
             android:visibility="visible"
@@ -30,7 +34,8 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:hint="@string/name"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#FFFFFF"/>
 
         <EditText
             android:id="@+id/phonenumber"
@@ -42,6 +47,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:hint="@string/phonenumber"
+            android:textColor="#FFFFFF"
             android:inputType="number" />
 
 
@@ -55,46 +61,65 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:hint="@string/email"
+            android:textColor="#FFFFFF"
             android:inputType="textEmailAddress" />
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardview"
+            android:id="@+id/dialogCardview1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/mail">
+            android:layout_below="@id/mail"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="15dp">
 
             <fragment
-                android:id="@+id/autocomplete"
+                android:id="@+id/dialogTargetAddress"
                 android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"/>
-
+                android:layout_marginTop="4dp" />
         </android.support.v7.widget.CardView>
 
-        <Button
-            android:id="@+id/dialogMakeorder"
-            android:layout_width="124dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cardview"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/transparent"
-            android:text="@string/addRide"
-            android:textColor="@color/colorAccent" />
 
-        <Button
-            android:id="@+id/dialogCancelOrder"
-            android:layout_width="124dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/dialogMakeorder"
-            android:layout_alignParentLeft="true"
-            android:layout_marginStart="19dp"
-            android:layout_marginLeft="19dp"
-            android:background="@android:color/transparent"
-            android:text="@string/cancelOrder"
-            android:textColor="@color/colorAccent" />
+            android:orientation="horizontal"
+            android:layout_below="@id/dialogCardview1">
+
+
+            <com.rilixtech.materialfancybutton.MaterialFancyButton
+                android:id="@+id/dialogCancelOrder"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                fancy:mfb_borderColor="@color/colorAccent"
+                fancy:mfb_borderWidth="2dp"
+                fancy:mfb_defaultColor="#064e05"
+                fancy:mfb_focusColor="#9bd823"
+                fancy:mfb_radius="10dp"
+                fancy:mfb_text="@string/cancelOrder"
+                fancy:mfb_textColor="@color/colorAccent"
+                fancy:mfb_textSize="24dp" />
+
+            <com.rilixtech.materialfancybutton.MaterialFancyButton
+                android:id="@+id/dialogMakeorder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                fancy:mfb_borderColor="@color/colorAccent"
+                fancy:mfb_borderWidth="2dp"
+                fancy:mfb_defaultColor="#064e05"
+                fancy:mfb_focusColor="#9bd823"
+                fancy:mfb_radius="10dp"
+                fancy:mfb_text="@string/addRide"
+                fancy:mfb_textColor="@color/colorAccent"
+                fancy:mfb_textSize="24dp" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 </ScrollView>

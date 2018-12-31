@@ -32,6 +32,13 @@ public class Ride {
         this.targetLocation=targetLocation;
     }
 
+    public Ride(String name, String phoneNumber, String mail, CustomLocation targetLocation) {
+        this.clientName= name;
+        this.clientPhoneNumber = phoneNumber;
+        this.clientMail = mail;
+        this.targetLocation=targetLocation;
+    }
+
     public Status getStatus() {
         return status;
     }
