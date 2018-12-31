@@ -90,6 +90,19 @@
             android:orientation="horizontal"
             android:layout_below="@id/dialogCardview1">
 
+            <com.rilixtech.materialfancybutton.MaterialFancyButton
+                android:id="@+id/dialogMakeorder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                fancy:mfb_borderColor="@color/colorAccent"
+                fancy:mfb_borderWidth="2dp"
+                fancy:mfb_defaultColor="#064e05"
+                fancy:mfb_focusColor="#9bd823"
+                fancy:mfb_radius="10dp"
+                fancy:mfb_text="@string/addRide"
+                fancy:mfb_textColor="@color/colorAccent"
+                fancy:mfb_textSize="24dp" />
 
             <com.rilixtech.materialfancybutton.MaterialFancyButton
                 android:id="@+id/dialogCancelOrder"
@@ -105,19 +118,6 @@
                 fancy:mfb_textColor="@color/colorAccent"
                 fancy:mfb_textSize="24dp" />
 
-            <com.rilixtech.materialfancybutton.MaterialFancyButton
-                android:id="@+id/dialogMakeorder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                fancy:mfb_borderColor="@color/colorAccent"
-                fancy:mfb_borderWidth="2dp"
-                fancy:mfb_defaultColor="#064e05"
-                fancy:mfb_focusColor="#9bd823"
-                fancy:mfb_radius="10dp"
-                fancy:mfb_text="@string/addRide"
-                fancy:mfb_textColor="@color/colorAccent"
-                fancy:mfb_textSize="24dp" />
 
         </LinearLayout>
 
