@@ -45,18 +45,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rilixtech.materialfancybutton.MaterialFancyButton;
+import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback,View.OnClickListener {
 
     private GoogleMap mMap;
-    private GoogleApiClient googleApiClient;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
     private String id;
+    private Dialog dialog;
+    private CatLoadingView catLoading;
     ArrayList markerPoints= new ArrayList();
 
     private CustomLocation pickUpLocation = null;
@@ -71,37 +74,19 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        ((MaterialFancyButton)findViewById(R.id.cancelRide)).setVisibility(View.INVISIBLE);
 
-        gpsButton();
-        sourceAddressAutoComplete();
-
+        FloatingActionButton FAB =    findViewById(R.id.myLocationButton);
         MaterialFancyButton addRide = findViewById(R.id.addRide);
-        addRide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
 
-                openDialog();
-            }
-        });
+        FAB.setOnClickListener(this);
+        addRide.setOnClickListener(this);
+        cancelRide.setOnClickListener(this);
+
+        sourceAddressAutoComplete();
     }
 
-    public void gpsButton(){
-        FloatingActionButton FAB = (FloatingActionButton) findViewById(R.id.myLocationButton);
-        FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Location findme = mMap.getMyLocation();
-                if (findme!=null) {
-                    LatLng latLng = new LatLng(findme.getLatitude(),findme.getLongitude());
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-                    mMap.animateCamera(cameraUpdate);
-                }
-                else
-                    Toast.makeText(getApplicationContext(),R.string.findLocationError , Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     public void sourceAddressAutoComplete(){
         PlaceAutocompleteFragment placeAutocompleteFragment;
@@ -124,14 +109,18 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     }
 
     public void openDialog(){
-        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog = new Dialog(MainActivity.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.userdetails_dialog);
         dialog.show();
 
-        makeOrderButton(dialog);
-        cancelOrderButton(dialog);
-        targetAutoComplete();
+        MaterialFancyButton makeOrder =   dialog.findViewById(R.id.dialogMakeorder);
+        MaterialFancyButton cancelOrder = dialog.findViewById(R.id.dialogCancelOrder);
+
+        makeOrder.setOnClickListener(this);
+        cancelOrder.setOnClickListener(this);
+
+        targetAddressAutoComplete();
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -145,73 +134,66 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         });
     }
 
-    public void makeOrderButton(final Dialog dialog){
-        MaterialFancyButton makeOrder = dialog.findViewById(R.id.dialogMakeorder);
-        makeOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Ride newRide = new Ride(
-                        ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
-                        ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
-                        ((EditText) dialog.findViewById(R.id.mail)).getText().toString(),
-                        targetLocation);
+    public void makeOrderButtonClicked(final Dialog dialog){
 
-                //Set the PickUp location
-                if (pickUpLocation!=null)
-                    newRide.setSourceLocation(pickUpLocation);
-                else {
-                    if (mMap.getMyLocation()!=null)
-                        newRide.setSourceLocation(new CustomLocation(mMap.getMyLocation()));
-                    else
-                        /*GPS is not enabled -> The source location is empty*/
-                        newRide.setSourceLocation(new CustomLocation());
-                }
+        Ride newRide = new Ride(
+                ((EditText) dialog.findViewById(R.id.name)).getText().toString(),
+                ((EditText) dialog.findViewById(R.id.phonenumber)).getText().toString(),
+                ((EditText) dialog.findViewById(R.id.mail)).getText().toString(),
+                targetLocation);
 
-                newRide.setStatus(Ride.Status.AVAILABLE);
-                id=backend.addRide(newRide);
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(),R.string.order_successful , Toast.LENGTH_SHORT).show();
+        //Set the PickUp location
+        if (pickUpLocation!=null)
+            newRide.setSourceLocation(pickUpLocation);
+        else {
+            if (mMap.getMyLocation()!=null)
+                newRide.setSourceLocation(new CustomLocation(mMap.getMyLocation()));
+            else
+                /*GPS is not enabled -> The source location is empty*/
+                newRide.setSourceLocation(new CustomLocation());
+        }
 
-                //--------------------------Add Destination-Marker------------------------------
-                if (markerPoints.size() > 1) {
-                    markerPoints.clear();
-                    mMap.clear();
-                }
+        newRide.setStatus(Ride.Status.AVAILABLE);
+        id=backend.addRide(newRide);
+        dialog.dismiss();
 
-                // Adding new item to the ArrayList
-                markerPoints.add(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
+        //--------------------------Add Destination-Marker------------------------------
+        if (markerPoints.size() > 1) {
+            markerPoints.clear();
+            mMap.clear();
+        }
 
-                // Creating MarkerOptions
-                MarkerOptions options = new MarkerOptions();
+        // Adding new item to the ArrayList
+        markerPoints.add(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
 
-                // Setting the position of the marker
-                options.position(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
+        // Creating MarkerOptions
+        MarkerOptions options = new MarkerOptions();
 
-                if (markerPoints.size() == 1) {
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                } else if (markerPoints.size() == 2) {
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
+        // Setting the position of the marker
+        options.position(new LatLng(targetLocation.getLatitude(),targetLocation.getLongitude()));
 
-                // Add new marker to the Google Map Android API V2
-                mMap.addMarker(options);
-            }
-        });
+        if (markerPoints.size() == 1) {
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        } else if (markerPoints.size() == 2) {
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
 
+        // Add new marker to the Google Map Android API V2
+        mMap.addMarker(options);
+
+        //--------------------------Replace AddRide with CancelRIde and waits ------------------------------
+        ((MaterialFancyButton)findViewById(R.id.addRide)).setVisibility(View.INVISIBLE);
+        MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
+        cancelRide.setVisibility(View.VISIBLE);
+
+        catLoading = new CatLoadingView();
+        catLoading.setText(getString(R.string.searchDriver));
+        catLoading.show(getSupportFragmentManager(), "");
+        catLoading.setCanceledOnTouchOutside(false);
     }
 
-    public void cancelOrderButton(final Dialog dialog){
-        MaterialFancyButton cancelOrder = dialog.findViewById(R.id.dialogCancelOrder);
-        cancelOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
 
-        });
-    }
-
-    public void targetAutoComplete(){
+    public void targetAddressAutoComplete(){
         PlaceAutocompleteFragment placeAutocompleteFragment;
         placeAutocompleteFragment = (PlaceAutocompleteFragment)getFragmentManager().findFragmentById( R.id.dialogTargetAddress );
         placeAutocompleteFragment.setHint(getString(R.string.targetaddress));
@@ -339,6 +321,40 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     @Override
     public void onMyLocationChange(Location location) {
         backend.updatelocation(id,(CustomLocation)location);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.addRide:
+                openDialog();
+                break;
+
+            case R.id.myLocationButton:
+
+                Location findme = mMap.getMyLocation();
+                if (findme!=null) {
+                    LatLng latLng = new LatLng(findme.getLatitude(),findme.getLongitude());
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+                    mMap.animateCamera(cameraUpdate);
+                }
+                else
+                    Toast.makeText(getApplicationContext(),R.string.findLocationError , Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.dialogMakeorder:
+                makeOrderButtonClicked(dialog);
+                break;
+
+            case R.id.dialogCancelOrder:
+                dialog.dismiss();
+                break;
+
+            case R.id.cancelRide:
+
+        }
     }
 }
 
