@@ -79,7 +79,6 @@ public class FireBase implements Ibackend {
 
         myRef = database.getReference("Rides");
         String id = myRef.push().getKey();
-// create a child with index value
         myRef.child(id).setValue(newRide);
         return id;
     }

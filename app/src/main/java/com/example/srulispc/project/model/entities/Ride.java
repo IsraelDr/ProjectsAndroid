@@ -21,6 +21,7 @@ public class Ride {
     private String clientName;
     private String clientPhoneNumber;
     private String clientMail;
+    private Long timestamp;
 
     public Ride(){}
 
@@ -30,13 +31,23 @@ public class Ride {
         this.clientMail = mail;
         this.sourceLocation=sourcelocation;
         this.targetLocation=targetLocation;
+        this.timestamp=new Date().getTime();
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Ride(String name, String phoneNumber, String mail, CustomLocation targetLocation) {
-        this.clientName= name;
+        this.clientName = name;
         this.clientPhoneNumber = phoneNumber;
         this.clientMail = mail;
-        this.targetLocation=targetLocation;
+        this.targetLocation = targetLocation;
+        this.timestamp = new Date().getTime();
     }
 
     public Status getStatus() {
