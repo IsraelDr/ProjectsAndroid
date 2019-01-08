@@ -9,12 +9,14 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -31,7 +33,6 @@ import com.example.srulispc.project.model.backend.BackendFactory;
 import com.example.srulispc.project.model.backend.Ibackend;
 import com.example.srulispc.project.model.entities.CustomLocation;
 import com.example.srulispc.project.model.entities.Ride;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
         OnMapReadyCallback,View.OnClickListener {
 
-    private GoogleMap mMap;
+    public static GoogleMap mMap;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
     private String id;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        ((MaterialFancyButton)findViewById(R.id.cancelRide)).setVisibility(View.INVISIBLE);
+        findViewById(R.id.cancelRide).setVisibility(View.INVISIBLE);
 
         FloatingActionButton FAB =    findViewById(R.id.myLocationButton);
         MaterialFancyButton addRide = findViewById(R.id.addRide);
@@ -154,7 +155,33 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         }
 
         newRide.setStatus(Ride.Status.AVAILABLE);
-        id=backend.addRide(newRide);
+        id=backend.addRide(newRide, new Ibackend.Action() {
+            @Override
+            public void onSuccess(Object obj) {
+                int k=5;
+                catLoading.dismiss();
+                //LatLng origin =new LatLng(pickUpLocation.getLatitude(),pickUpLocation.getLongitude());
+                //LatLng dest = (LatLng) markerPoints.get(0);
+
+                // Getting URL to the Google Directions API
+                //String url = getDirectionsUrl(origin, dest);
+
+                //DownloadTask downloadTask = new DownloadTask();
+
+                // Start downloading json data from Google Directions API
+                //downloadTask.execute(url);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+
+            }
+
+            @Override
+            public void onProgress(String status, double percent) {
+
+            }
+        });
         dialog.dismiss();
 
         //--------------------------Add Destination-Marker------------------------------
@@ -182,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         mMap.addMarker(options);
 
         //--------------------------Replace AddRide with CancelRIde and waits ------------------------------
-        ((MaterialFancyButton)findViewById(R.id.addRide)).setVisibility(View.INVISIBLE);
+        findViewById(R.id.addRide).setVisibility(View.INVISIBLE);
         MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
         cancelRide.setVisibility(View.VISIBLE);
 
@@ -190,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         catLoading.setText(getString(R.string.searchDriver));
         catLoading.show(getSupportFragmentManager(), "");
         catLoading.setCanceledOnTouchOutside(false);
+
+
     }
 
 
@@ -268,30 +297,35 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         }
     }
     private void getGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-        // Setting Dialog Title
-        alertDialog.setTitle(R.string.locationrequired);
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
-        // Setting Dialog Message
-        alertDialog.setMessage(R.string.locationdescription);
+            // Setting Dialog Title
+            alertDialog.setTitle(R.string.locationrequired);
 
-        // On pressing Settings button
-        alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(intent,1);
-            }
-        });
+            // Setting Dialog Message
+            alertDialog.setMessage(R.string.locationdescription);
 
-        // on pressing cancel button
-        alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        // Showing Alert Message
-        alertDialog.show();
+            // On pressing Settings button
+            alertDialog.setPositiveButton(R.string.settings, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int which) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(intent,1);
+                }
+            });
+
+            // on pressing cancel button
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            // Showing Alert Message
+            alertDialog.show();
+        }
+
     }
     @SuppressLint("MissingPermission")
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -353,8 +387,61 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 break;
 
             case R.id.cancelRide:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+                // Setting Dialog Title
+                //alertDialog.setTitle(R.string.areyousure);
+
+                // Setting Dialog Message
+                alertDialog.setMessage(R.string.areyousure);
+
+                // On pressing Settings button
+                alertDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        backend.cancelride(id);
+                        findViewById(R.id.addRide).setVisibility(View.VISIBLE);
+                        MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
+                        cancelRide.setVisibility(View.INVISIBLE);
+                        dialog.cancel();
+                    }
+                });
+
+                // on pressing cancel button
+                alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                // Showing Alert Message
+                alertDialog.show();
+
+                break;
 
         }
+    }
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+        String mode = "mode=driving";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters+ "&key=AIzaSyAQ6ss9kjB08dT7PANVF23vzEq_rRATlmI";
+
+
+        return url;
     }
 }
 

@@ -12,14 +12,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-
 public class FireBase implements Ibackend {
 
     //int counter;
     FirebaseDatabase database;
     DatabaseReference myRef;
-    HashMap<String,Ride> rides=new HashMap<String,Ride>();
+    Ride ride=new Ride();
+    String id;
 
 
     public FireBase()
@@ -28,10 +27,10 @@ public class FireBase implements Ibackend {
         myRef=database.getReference("Rides");
 
         //-------------Get counter from FireBase-------------
-        myRef.addChildEventListener(new ChildEventListener() {
+        /*myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                rides.put(dataSnapshot.getKey(),dataSnapshot.getValue(Ride.class));
+                ride=dataSnapshot.getValue(Ride.class);
             }
 
             @Override
@@ -53,7 +52,7 @@ public class FireBase implements Ibackend {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
        /* myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,13 +71,41 @@ public class FireBase implements Ibackend {
     }
 
 
-    public String addRide(Ride newRide) {
-
-        //counter++;
-        //database.getReference("counter").setValue(counter);
-
+    public String addRide(Ride newRide, final Action action) {
         myRef = database.getReference("Rides");
-        String id = myRef.push().getKey();
+        id = myRef.push().getKey();
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.getKey().equals(id))
+                    ride=dataSnapshot.getValue(Ride.class);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(dataSnapshot.getKey().equals(id))
+                    ride=dataSnapshot.getValue(Ride.class);
+                if(ride.getStatus()== Ride.Status.BUSY)
+                    action.onSuccess(null);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getKey().equals(id))
+                    ride=null;
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        newRide.setRidekey(id);
         myRef.child(id).setValue(newRide);
         return id;
     }
@@ -87,7 +114,15 @@ public class FireBase implements Ibackend {
         //counter++;
         //database.getReference("counter").setValue(counter);
 
-        myRef = database.getReference("Rides");
-        myRef.child(id).child("sourceLocation").setValue(c);
+        //myRef = database.getReference("Rides");
+        if(ride!=null)
+            myRef.child(id).child("sourceLocation").setValue(c);
     }
+
+    @Override
+    public void cancelride(String id) {
+        myRef = database.getReference("Rides");
+        myRef.child(id).removeValue();
+    }
+
 }
