@@ -65,10 +65,25 @@
             android:inputType="textEmailAddress" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/dialog_pickupAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mail"
+            app:cardCornerRadius="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/dialog_pickupTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:id="@+id/dialogCardview1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/mail"
+            android:layout_below="@id/dialog_pickupAddress"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"

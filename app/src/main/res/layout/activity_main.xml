@@ -87,7 +87,8 @@
             fancy:mfb_radius="30dp"
             fancy:mfb_text="@string/cancelOrder"
             fancy:mfb_textColor="#FFFFFF"
-            fancy:mfb_textSize="24dp" />
+            fancy:mfb_textSize="24dp"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
