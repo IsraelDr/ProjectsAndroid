@@ -52,8 +52,8 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
-        OnMapReadyCallback,View.OnClickListener {
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationChangeListener,
+        OnMapReadyCallback, View.OnClickListener {
 
     public static GoogleMap mMap;
     private static final int REQUEST_ACCESS_LOCATION = 0;
@@ -61,10 +61,11 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private String id;
     private Dialog dialog;
     private CatLoadingView catLoading;
-    ArrayList markerPoints= new ArrayList();
+    ArrayList markerPoints = new ArrayList();
 
     private CustomLocation pickUpLocation = null;
     private CustomLocation targetLocation = new CustomLocation("targetLocation");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         mapFragment.getMapAsync(this);
         findViewById(R.id.cancelRide).setVisibility(View.INVISIBLE);
 
-        FloatingActionButton FAB =    findViewById(R.id.myLocationButton);
+        FloatingActionButton FAB = findViewById(R.id.myLocationButton);
         MaterialFancyButton addRide = findViewById(R.id.addRide);
         MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
 
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         cancelRide.setOnClickListener(this);
 
         sourceAddressAutoComplete();
+
     }
 
 
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             public void onSuccess(Object obj) {
                 int k=5;
                 catLoading.dismiss();
+                Toast.makeText(getApplicationContext(), "The Driver is one his way", Toast.LENGTH_LONG).show();
                 //LatLng origin =new LatLng(pickUpLocation.getLatitude(),pickUpLocation.getLongitude());
                 //LatLng dest = (LatLng) markerPoints.get(0);
 

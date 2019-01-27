@@ -12,7 +12,7 @@ public class Ride {
     public enum  Status {
         AVAILABLE,
         BUSY,
-        FINISHED
+        CAUGHT, FINISHED
     }
     private String ridekey;
     private Status status;
