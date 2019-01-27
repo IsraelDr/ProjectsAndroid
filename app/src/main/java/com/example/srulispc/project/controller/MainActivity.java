@@ -1,5 +1,3 @@
-//hgfgjhfjh
-//jyjhgjd
 package com.example.srulispc.project.controller;
 
 import android.Manifest;
@@ -53,11 +51,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,GoogleMap.OnMyLocationChangeListener,
-        OnMapReadyCallback,View.OnClickListener {
 
-    private GoogleMap mMap;
+public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationChangeListener,
+        OnMapReadyCallback, View.OnClickListener {
+
+    public static GoogleMap mMap;
     private static final int REQUEST_ACCESS_LOCATION = 0;
     private Ibackend backend;
     private String id;
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
     private CustomLocation pickUpLocation = null;
     private CustomLocation targetLocation = new CustomLocation("targetLocation");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        findViewById(R.id.cancelRide).setVisibility(View.INVISIBLE);
 
         FloatingActionButton FAB =    findViewById(R.id.myLocationButton);
         MaterialFancyButton addRide = findViewById(R.id.addRide);
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         cancelRide.setOnClickListener(this);
 
         sourceAddressAutoComplete();
+
     }
 
 
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
 
         MaterialFancyButton makeOrder =   dialog.findViewById(R.id.dialogMakeorder);
         MaterialFancyButton cancelOrder = dialog.findViewById(R.id.dialogCancelOrder);
+
         makeOrder.setOnClickListener(this);
         cancelOrder.setOnClickListener(this);
 
@@ -154,7 +157,34 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         }
 
         newRide.setStatus(Ride.Status.AVAILABLE);
-        id=backend.addRide(newRide);
+        id=backend.addRide(newRide, new Ibackend.Action() {
+            @Override
+            public void onSuccess(Object obj) {
+                int k=5;
+                catLoading.dismiss();
+                Toast.makeText(getApplicationContext(), "The Driver is one his way", Toast.LENGTH_LONG).show();
+                //LatLng origin =new LatLng(pickUpLocation.getLatitude(),pickUpLocation.getLongitude());
+                //LatLng dest = (LatLng) markerPoints.get(0);
+
+                // Getting URL to the Google Directions API
+                //String url = getDirectionsUrl(origin, dest);
+
+                //DownloadTask downloadTask = new DownloadTask();
+
+                // Start downloading json data from Google Directions API
+                //downloadTask.execute(url);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+
+            }
+
+            @Override
+            public void onProgress(String status, double percent) {
+
+            }
+        });
         dialog.dismiss();
 
         //--------------------------Add Destination-Marker------------------------------
@@ -266,7 +296,10 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         }
     }
     private void getGPS() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         // Setting Dialog Title
         alertDialog.setTitle(R.string.locationrequired);
@@ -351,8 +384,61 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 break;
 
             case R.id.cancelRide:
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+                // Setting Dialog Title
+                //alertDialog.setTitle(R.string.areyousure);
+
+                // Setting Dialog Message
+                alertDialog.setMessage(R.string.areyousure);
+
+                // On pressing Settings button
+                alertDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        backend.cancelride(id);
+                        findViewById(R.id.addRide).setVisibility(View.VISIBLE);
+                        MaterialFancyButton cancelRide = findViewById(R.id.cancelRide);
+                        cancelRide.setVisibility(View.INVISIBLE);
+                        dialog.cancel();
+                    }
+                });
+
+                // on pressing cancel button
+                alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                // Showing Alert Message
+                alertDialog.show();
+
+                break;
 
         }
+    }
+    private String getDirectionsUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+        String mode = "mode=driving";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters+ "&key=AIzaSyAQ6ss9kjB08dT7PANVF23vzEq_rRATlmI";
+
+
+        return url;
     }
 }
 

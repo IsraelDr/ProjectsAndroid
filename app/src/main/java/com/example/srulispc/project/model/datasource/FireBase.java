@@ -85,8 +85,11 @@ public class FireBase implements Ibackend {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(dataSnapshot.getKey().equals(id))
                     ride=dataSnapshot.getValue(Ride.class);
-                if(ride.getStatus()== Ride.Status.BUSY)
+                if(ride.getStatus()== Ride.Status.CAUGHT) {
                     action.onSuccess(null);
+                    myRef = database.getReference("Rides");
+                    myRef.child(id).child("status").setValue(Ride.Status.BUSY);
+                }
             }
 
             @Override
