@@ -95,13 +95,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                fancy:mfb_borderColor="@color/colorAccent"
+                fancy:mfb_borderColor="#FFFFFF"
                 fancy:mfb_borderWidth="2dp"
-                fancy:mfb_defaultColor="#064e05"
-                fancy:mfb_focusColor="#9bd823"
+                fancy:mfb_defaultColor="@color/colorPrimaryDark"
+                fancy:mfb_focusColor="@color/ic_launcher_background"
                 fancy:mfb_radius="10dp"
                 fancy:mfb_text="@string/addRide"
-                fancy:mfb_textColor="@color/colorAccent"
+                fancy:mfb_textColor="#FFFFFF"
                 fancy:mfb_textSize="24dp" />
 
             <com.rilixtech.materialfancybutton.MaterialFancyButton
@@ -109,13 +109,13 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                fancy:mfb_borderColor="@color/colorAccent"
+                fancy:mfb_borderColor="#FFFFFF"
                 fancy:mfb_borderWidth="2dp"
-                fancy:mfb_defaultColor="#064e05"
-                fancy:mfb_focusColor="#9bd823"
+                fancy:mfb_defaultColor="@color/colorPrimaryDark"
+                fancy:mfb_focusColor="@color/ic_launcher_background"
                 fancy:mfb_radius="10dp"
                 fancy:mfb_text="@string/cancelOrder"
-                fancy:mfb_textColor="@color/colorAccent"
+                fancy:mfb_textColor="#FFFFFF"
                 fancy:mfb_textSize="24dp" />
 
 
