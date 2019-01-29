@@ -24,6 +24,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.srulispc.project.R;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
     private CustomLocation pickUpLocation = null;
     private CustomLocation targetLocation = new CustomLocation("targetLocation");
 
+    String pickUpAddress = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
                 pickUpLocation = new CustomLocation("pickUpLocation");
                 pickUpLocation.setLatitude(place.getLatLng().latitude);
                 pickUpLocation.setLongitude(place.getLatLng().longitude);
+                pickUpAddress = place.getAddress().toString();
             }
 
             @Override
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
             }
         });
     }
+
 
     public void openDialog() {
         dialog = new Dialog(MainActivity.this);
@@ -118,6 +123,12 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMyLoc
         MaterialFancyButton cancelOrder = dialog.findViewById(R.id.dialogCancelOrder);
         makeOrder.setOnClickListener(this);
         cancelOrder.setOnClickListener(this);
+
+        TextView textView = dialog.findViewById(R.id.pickUpAddressTxt);
+        if (pickUpAddress=="")
+            textView.setText("כתובת איסוף: מיקומך הנוכחי");
+        else
+            textView.setText("כתובת איסוף: " + pickUpAddress);
 
         targetAddressAutoComplete();
 

@@ -98,12 +98,22 @@
                 android:layout_marginTop="4dp" />
         </android.support.v7.widget.CardView>
 
+        <TextView
+            android:id="@+id/pickUpAddressTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialogCardview1"
+            android:layout_centerHorizontal="true"
+            android:text="כתובת איסוף: הועד הלאומי 21, ירושלים"
+            android:textColor="#90F10A0A"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/dialogCardview1">
+            android:layout_below="@id/pickUpAddressTxt"
+            android:layout_marginTop="10dp">
 
             <com.rilixtech.materialfancybutton.MaterialFancyButton
                 android:id="@+id/dialogMakeorder"
