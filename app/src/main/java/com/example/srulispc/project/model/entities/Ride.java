@@ -24,6 +24,7 @@ public class Ride {
     private String clientPhoneNumber;
     private String clientMail;
     private Long timestamp;
+    private Long driverID;
 
     public Ride(){}
 
@@ -121,5 +122,11 @@ public class Ride {
 
     public void setRidekey(String ridekey) {
         this.ridekey = ridekey;
+    }
+
+
+    public Long getDriverID() { return driverID; }
+    public void setDriverID(Long driverID) {
+        this.driverID = driverID;
     }
 }

@@ -19,4 +19,7 @@
     <string name="findLocationError">לא נמצא מיקום! וודא שה-GPS דלוק ונסה שוב.</string>
     <string name="searchDriver">מחפש עבורך נהג...</string>
     <string name="your_current_location">המיקום הנוכחי שלך</string>
+    <string name="areyousure">האם אתה בטוח?</string>
+    <string name="yes">כן</string>
+    <string name="ok">אישור</string>
 </resources>
